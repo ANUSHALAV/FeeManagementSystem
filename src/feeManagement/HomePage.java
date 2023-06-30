@@ -121,7 +121,11 @@ public class HomePage extends JFrame implements ActionListener {
 		
 		jb2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new SearchRecorde();
+				SearchRecorde sr=new SearchRecorde();
+//				sr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//				sr.setVisible(true);
+//				sr.setResizable(false);
+//				sr.setTitle("Search Recorde");
 			}
 		});
 //-----------------------------------------------------------------------------------------------

@@ -1,58 +1,26 @@
 package feeManagement;
 
-import java.awt.*;
-import java.sql.*;
-import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
 
 public class ViewRecorde extends JFrame {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Container con = getContentPane();
-	JLabel heading;
-	JTable table;
+	private JPanel contentPane;
+	private JTable table;
+	private JScrollPane scrollPane;
 	DefaultTableModel model;
+	private JLabel lblSearch;
+	private JTextField searchfield;
 
-	public ViewRecorde() {
-		this.setVisible(true);
-		this.setLayout(null);
-		this.setBounds(200, 100, 950, 750);
-		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		leftSidePageLayout();
-	}
-//----------------------------------------------------------------------------------------
-
-	
-	void leftSidePageLayout() {
-		JPanel leftpanel = new JPanel();
-		leftpanel.setBounds(0, 0, 950, 750);
-		leftpanel.setBackground(new Color(4, 50, 86));
-		leftpanel.setLayout(null);
-		con.add(leftpanel);
-		
-		heading = new JLabel("View Recorde");
-		heading.setBounds(350, 20, 300, 50);
-		heading.setForeground(Color.WHITE);
-		heading.setFont(new Font("arial", Font.BOLD, 35));
-		leftpanel.add(heading);
-		
-		String[] columnsName = { "ReciptNo", "StudentName", "Course", "PaymentMode", "Amount" };
-		table = new JTable(model);
-		table.setBounds(70, 120, 820, 550);
-		table.setBackground(Color.black);
-		table.setFont(new Font("arial",Font.BOLD,15));
-		table.setForeground(Color.WHITE);
-		model = (DefaultTableModel) table.getModel();
-		model.addColumn(columnsName);
-		leftpanel.add(table);
-		setRecordInTable();
-		validate();
-		
-	}
-	
 	public void setRecordInTable() {
 		try {
 
@@ -60,16 +28,71 @@ public class ViewRecorde extends JFrame {
 			PreparedStatement pst = con.prepareStatement("select * from feesdetail");
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
-				int reciptno =rs.getInt("recipt_no");
+				int reciptno = rs.getInt("recipt_no");
 				String studentname = rs.getString("student_name");
+				String parentname = rs.getString("parent_name");
 				String coursename = rs.getString("course");
 				String paymentmode = rs.getString("payment_mode");
 				int totalamount = rs.getInt("total_amount");
-				Object[] obj = { reciptno,studentname, coursename, paymentmode, totalamount };
+				Object[] obj = { reciptno, studentname, parentname, coursename, paymentmode, totalamount };
+				model = (DefaultTableModel) table.getModel();
 				model.addRow(obj);
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+
+	/**
+	 * Create the frame.
+	 */
+
+	public ViewRecorde() {
+		this.setBounds(200, 100, 950, 750);
+		this.setVisible(true);
+		this.setResizable(false);
+		contentPane = new JPanel();
+		contentPane.setForeground(new Color(255, 255, 255));
+		contentPane.setBackground(new Color(4, 50, 86));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 251, 900, 400);
+		contentPane.add(scrollPane);
+
+		table = new JTable();
+		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		table.setForeground(new Color(255, 255, 255));
+		table.setBackground(new Color(0, 0, 0));
+		scrollPane.setViewportView(table);
+		table.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "Recipt no", "Student name", "Parent name", "Course", "Payment mode", "Total amount" }) {
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+
+		JLabel lblSearchRecord = new JLabel("View Record");
+		lblSearchRecord.setIcon(new ImageIcon(example.class.getResource("/images/view all record.png")));
+		lblSearchRecord.setForeground(new Color(255, 255, 255));
+		lblSearchRecord.setFont(new Font("Tahoma", Font.BOLD, 39));
+		lblSearchRecord.setBounds(282, 11, 368, 64);
+		contentPane.add(lblSearchRecord);
+
+		
+		setRecordInTable();
+
+	}
+
+	
 }

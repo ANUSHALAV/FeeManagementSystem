@@ -20,19 +20,24 @@ public class Main  {
 		w.revalidate();
 
 		JPanel panel = new JPanel();
+		panel.setLayout(null);
 		panel.setBackground(new Color(34, 149, 237));
-		JLabel heading=new JLabel("Welcome To Fee Management System");
-		heading.setForeground(Color.WHITE);
-		heading.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel icon2 = new JLabel("");
+		icon2.setIcon(new ImageIcon(example.class.getResource("/images/download.png")));
+		icon2.setBounds(170,100,900,250);
+		panel.add(icon2);
+		JLabel heading=new JLabel("Welcome To Fee Management");
+		heading.setForeground(Color.BLACK);
+		heading.setBounds(0,0,1000,50);
 		heading.setFont(new Font("verdana",Font.BOLD,28));
 		
-		panel.add(heading);
+		icon2.add(heading);
 	
 		w.add(panel);
 		panel.setBorder(BorderFactory.createLineBorder(Color.black));
 		JProgressBar progress = new JProgressBar(0, 100);
-		progress.setForeground(Color.orange);
-		progress.setBackground(new Color(34, 149, 237));
+		progress.setForeground(new Color(68,189,50));
+		progress.setBackground(new Color(0, 0, 0));
 		w.add(BorderLayout.PAGE_END, progress);
 
 		timer = new Timer(100, new ActionListener() {
